@@ -1,4 +1,4 @@
-FROM mswtf/container-pilot:2.3
+FROM mswtf/container-pilot:latest
 MAINTAINER Gregory Daynes <gregdaynes@gmail.com>
 
 # install node
