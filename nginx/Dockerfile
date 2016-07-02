@@ -16,10 +16,4 @@ RUN curl -Lo /tmp/consul_template_${CONSUL_TEMPLATE_VERSION}_linux_amd64.zip htt
 # our nginx commands
 COPY nginx.sh /bin
 
-# Nginx config
-COPY nginx.conf /etc/nginx/nginx.conf
-
-# Template
-COPY nginx.conf.ctmpl /etc/containerpilot/
-
 EXPOSE 80
