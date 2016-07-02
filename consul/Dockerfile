@@ -1,6 +1,7 @@
 # Inspiration [Most of the stuff] from
 # - GliderLabs https://gliderlabs.com
 FROM mswtf/base-image:3.4
+MAINTAINER Gregory Daynes @gregdaynes
 
 ENV CONSUL_VERSION 0.6.4
 ENV CONSUL_SHA256 abdf0e1856292468e2c9971420d73b805e93888e006c76324ae39416edcf0627

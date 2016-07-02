@@ -1,5 +1,5 @@
 FROM gliderlabs/alpine:3.4
-MAINTAINER Gregory Daynes <gregdaynes@gmail.com>
+MAINTAINER Gregory Daynes @gregdaynes
 
 # update and install curl
 RUN apk update && apk add \

@@ -1,5 +1,5 @@
 FROM mswtf/base-image:3.4
-MAINTAINER Gregory Daynes <gregdaynes@gmail.com>
+MAINTAINER Gregory Daynes @gregdaynes
 
 # install container pilot
 ENV CONTAINERPILOT_VERSION 2.3.0
