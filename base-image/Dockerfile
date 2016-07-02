@@ -7,8 +7,9 @@ RUN apk update && apk add \
     git \
     && rm -rf /var/cache/apk/*
 
-ADD ./vim-install /usr/local/bin/vim-install
-ADD ./vim-remove /usr/local/bin/vim-remove
+RUN curl -Lso /usr/local/bin/vim-install https://raw.githubusercontent.com/gregdaynes/microservices.wtf/master/vim-install/vim-install
+RUN curl -Lso /usr/local/bin/vim-remove https://raw.githubusercontent.com/gregdaynes/microservices.wtf/master/vim-install/vim-remove
+RUN curl -Lso ~/.vimrc https://raw.githubusercontent.com/gregdaynes/microservices.wtf/master/vim-install/vimrc
 RUN chmod a+x /usr/local/bin/vim-install
 RUN chmod a+x /usr/local/bin/vim-remove
 
