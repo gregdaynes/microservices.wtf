@@ -10,9 +10,6 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'scrooloose/nerdtree'
 Plugin 'vim-airline/vim-airline'
-Plugin 'othree/yajs.vim'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'othree/es.next.syntax.vim'
 Plugin 'tomtom/tcomment_vim'
 call vundle#end()
 
