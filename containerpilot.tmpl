@@ -1,0 +1,15 @@
+{
+    "consul": "{{ .SERVICE_DISCOVERY_HOST }}:{{ .SERVICE_DISCOVERY_PORT }}",
+    "services": [{
+        "name": "{{ .SERVICE_NAME }}",
+        "port": {{ .SERVICE_PORT }},
+        "health": "/usr/bin/curl --fail -s http://localhost:{{ .SERVICE_PORT }}/data",
+        "poll": {{ .SERVICE_DISCOVERY_POLL }},
+        "ttl": {{ .SERVICE_DISCOVERY_TTL }}
+    }],
+    "backends": [{
+        "name": "{{ .SERVICE_NAME }}",
+        "poll": {{ .SERVICE_DISCOVERY_POLL }},
+        "onChange": "pkill -SIGHUP {{ .SERVICE_PROCESS }}"
+    }]
+}

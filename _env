@@ -1,0 +1,23 @@
+# Environment variables for for Microservices
+GATEWAY_URL=http://.svc.567b82d0-42e8-6a3a-ddf0-b80db5296d30.eu-ams-1.triton.zone
+
+# Environment variables for MySQL service
+MYSQL_USER=mswtf_USER
+MYSQL_PASSWORD=rGYUGgw
+MYSQL_DATABASE=mswtf
+# MySQL replication user, should be different from above
+MYSQL_REPL_USER=repluser
+MYSQL_REPL_PASSWORD=bxHW5ux
+
+# Environment variables for backups to Manta
+MANTA_URL=https://us-east.manta.joyent.com
+MANTA_BUCKET=/ringpartner/stor/mswtf # an existing Manta bucket
+MANTA_USER=ringpartner # a user with access to that bucket
+MANTA_SUBUSER=
+MANTA_ROLE=
+MANTA_KEY_ID=4f:57:27:0c:d8:cd:60:63:d6:6c:ef:c4:1f:43:c7:0c
+MANTA_PRIVATE_KEY=-----BEGIN RSA PRIVATE KEY-----#MIIEogIBAAKCAQEA6DrtUwwveZjzwmUKQmdUug3LDvHeAt2d5VKnYfepLpRoDNaH#Ai8vFWHA2Fc/oDT62BFRigiL1U4fWqZK7gJcOHtJcUsIkcBHwcjrWvhKVDnVduRT#YOjgTIhXeS7GmPyGbOhnLlnQtrGaZsjLHwFXggpMPZ8NwtnQhnJpyJ7EkPd5LniF#K3/pr6jB9jy/Of25zwX2VP7ZDdZvQG0XROYWogTVq0qoQjqZW1fPtzXYT/07m9w0#pGtMYNpehO8+Up8Iq7BCk2ZLFK0X0eSuA3OcBY8DwEL63ssyBC/EzFGkLcmXQnvT#HIZJDD9DdAGQtwRBcfEKmfVEjM+sHwXLEtFxrQIDAQABAoIBAHji69VWO4RdxU4F#EMEeTvGG6pP9/aaaPG46h10s8YmIwV0lcyQE8cp8l0lGqZ041vcQlNR4vGmuAA5N#ECYzXlQcgU+TUoOkhvXuI+233+FWNbNtCaYhs1jDhF1VpxXOJh+dHtD2+fmQHCKz#FWEvbqEHwUY2fJBYl/7UohJH62TWH/sH4B6ZEkbC1L7g07pmgUJktbAGX5eaDH3s#EhOv7ah0YVeeFm3hbJvig+Fcv7IJ49cvRFJlAarNOwZpjZMEwaRu/IHgZ9Ds+LmN#I0ypWNNpJL7dN/W5nuBkL832JfZvhxpa7RvthM0MKfHT649gXxFfS5dIJBxGMYBT#015uyHUCgYEA+TP+n7jpSr13a7fNZBNYTvkbjRaxKOYHOZqjOX5g0B9/yqjBgdPM#WcV3+DMwunL+BPTflc8UR/nSuQ53R15D7bPlictlHlLztzOOoum2njDtpMNDMyl2#Ut+cTPwlg9esfgX/cA5vE5lwkcLCPiJxdhiIFDjKyHK9B2Ed25K2H2cCgYEA7pBs#OvXB49tZgnmOEMTxIrM7dib87NNmNmQGyLamSHcsXpE6qkUZfJdE6lgfywU20bri#/YlpYvg9uqv9kvOWhllkX/EsH2l+SxXkL5JWkqb/orCIiO4WcOxwG4j1oAcwqkCm#gOooGjZLj6056MV0hvl188GeBXmatz4rgQ3dPcsCgYA5AMK6qGJ83TAG7MlHngEy#N1ss/8bQcyWt8Ihrq1Pb54ikw8tXtinlUv0pQhRgYdNnMNg//VlHSYcBG6T/Jznk#kqTryyG7OQBUpK945nsGXmzNpnilqFNPi6TGG1s9eEUVoquWZ0bTNeMBBIrICbro#Z54g+giwp0ZD/NwGkN2l+wKBgCe6gWuoNavegZ+K4q/EPGwM8SASChjec60nJ0IR#uMtknUz6XoywiTgIcP+dwV2r9p8iwl56ncRPlugZcFcinbSt+ltH7JMmnFOgx6ls#c2Jk0TmksHgtPit8FIdhXZZS3DXeIlxhomALHrZEoNo0190Keiwn2EsNH0jY36HU#Tz3VAoGAP7rnPiq4K/SpheG5UVW/AuEPnB0wpuV0e3EX9K0OIgFZgLri7qM4urLX#gufLXyUhEO/WrjHWOip21HK3U4hjoMcbwgKZGXdFuwkq2s72hIEY2X67H9emFd9K#PfJq0iWygYxYx0rcZklOm4tGzke2J2CKA+XR2VRqjb/iXOaIOzA=#-----END RSA PRIVATE KEY-----#
+
+# Consul discovery via Triton CNS
+CONSUL=consul.svc.567b82d0-42e8-6a3a-ddf0-b80db5296d30.eu-ams-1.cns.joyent.com
+

@@ -1,3 +1,0 @@
-apk del vim
-rm -rf ~/.vimrc
-rm -rf ~/.vim

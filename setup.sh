@@ -1,55 +1,45 @@
 #!/bin/bash
-set -e -o pipefail
 
-help() {
-    echo
-    echo 'Usage ./setup.sh ~/path/to/MANTA_PRIVATE_KEY'
-    echo
-    echo 'Checks that your Triton and Docker environment is sane and configures'
-    echo 'an environment file to use.'
-    echo
-    echo 'MANTA_PRIVATE_KEY is the filesystem path to an SSH private key'
-    echo 'used to connect to Manta for the database backups.'
-    echo
-    echo 'Additional details must be configured in the _env file, but this script will properly'
-    echo 'encode the SSH key details for use with this this project.'
-    echo
-}
-
+echo
+echo 'Checks that your Triton and Docker environment is sane and configures'
+echo 'an environment file to use.'
+echo
+echo 'MANTA_PRIVATE_KEY is the filesystem path to an SSH private key'
+echo 'used to connect to Manta for the database backups.'
+echo
+echo 'Additional details must be configured in the _env file, but this script will properly'
+echo 'encode the SSH key details for use with this this project.'
+echo
 
 # populated by `check` function whenever we're using Triton
 TRITON_USER=
 TRITON_DC=
 TRITON_ACCOUNT=
 
-# ---------------------------------------------------
-# Top-level commands
-
 # Check for correct configuration and setup _env file
 envcheck() {
 
-    if [ -z "$1" ]; then
-        tput rev  # reverse
-        tput bold # bold
-        echo 'Please provide a path to a SSH private key to access Manta.'
-        tput sgr0 # clear
-
-        help
-        exit 1
-    fi
-
-    if [ ! -f "$1" ]; then
-        tput rev  # reverse
-        tput bold # bold
-        echo 'SSH private key for Manta is unreadable.'
-        tput sgr0 # clear
-
-        help
-        exit 1
-    fi
-
-    # Assign args to named vars
-    MANTA_PRIVATE_KEY_PATH=$1
+    ###
+    # Ask for inputs
+    #
+    # Service Name
+    echo "Please enter a cluster name: "
+    read CLUSTER_NAME
+    # Gateway
+    echo "What will the gateways label be? "
+    read GATEWAY_NAME
+    # MANTA
+    echo "Please enter a Manta Bucket path (use absolute path /company/stor/bucket_of_awesome): "
+    read MANTA_BUCKET
+    echo "Please enter the username with access to the Manta Bucket $(echo $MANTA_BUCKET): "
+    read MANTA_USER
+    echo "Enter a subuser name if you wish, otherwise press enter: "
+    read MANTA_SUBUSER
+    echo "Assign a manta user role if you wish, otherwise press enter: "
+    read MANTA_ROLE
+    echo "Please enter the path to the users manta ssh key: "
+    read MANTA_PRIVATE_KEY_PATH
+    # END OF INPUTS
 
     command -v docker >/dev/null 2>&1 || {
         echo
@@ -60,6 +50,7 @@ envcheck() {
         echo 'See https://docs.joyent.com/public-cloud/api-access/docker'
         exit 1
     }
+
     command -v json >/dev/null 2>&1 || {
         echo
         tput rev  # reverse
@@ -113,36 +104,15 @@ envcheck() {
 
     # setup environment file
     if [ ! -f "_env" ]; then
-        echo '# Environment variables for for WordPress site' > _env
-        echo '# please include the scheme http:// or https:// in the URL variable' >> _env
+        echo '# Environment variables for for Microservices' > _env
 
-        echo 'WORDPRESS_URL=http://'nginx.svc.${TRITON_ACCOUNT}.${TRITON_DC}.triton.zone >> _env
-        echo 'WORDPRESS_SITE_TITLE=Autopilot Pattern WordPress test site' >> _env
-        echo 'WORDPRESS_ADMIN_EMAIL=user@example.net' >> _env
-        echo 'WORDPRESS_ADMIN_USER=admin-'$(cat /dev/urandom | LC_ALL=C tr -dc 'A-Za-z0-9' | head -c 3) >> _env
-        echo 'WORDPRESS_ADMIN_PASSWORD='$(cat /dev/urandom | LC_ALL=C tr -dc 'A-Za-z0-9' | head -c 11) >> _env
-        echo 'WORDPRESS_ACTIVE_THEME=twentysixteen' >> _env
-        echo 'WORDPRESS_CACHE_KEY_SALT='$(cat /dev/urandom | LC_ALL=C tr -dc 'A-Za-z0-9' | head -c 53) >> _env
-        echo '#WORDPRESS_TEST_DATA=true # uncomment to import a collection of test content on start' >> _env
-        echo >> _env
-
-        echo '# Wordpress security salts' >> _env
-        echo '# These must be unique for your install to ensure the security of the site' >> _env
-        echo 'WORDPRESS_AUTH_KEY='$(cat /dev/urandom | LC_ALL=C tr -dc 'A-Za-z0-9' | head -c 53) >> _env
-        echo 'WORDPRESS_SECURE_AUTH_KEY='$(cat /dev/urandom | LC_ALL=C tr -dc 'A-Za-z0-9' | head -c 53) >> _env
-        echo 'WORDPRESS_LOGGED_IN_KEY='$(cat /dev/urandom | LC_ALL=C tr -dc 'A-Za-z0-9' | head -c 53) >> _env
-        echo 'WORDPRESS_NONCE_KEY='$(cat /dev/urandom | LC_ALL=C tr -dc 'A-Za-z0-9' | head -c 53) >> _env
-        echo 'WORDPRESS_AUTH_SALT='$(cat /dev/urandom | LC_ALL=C tr -dc 'A-Za-z0-9' | head -c 53) >> _env
-        echo 'WORDPRESS_SECURE_AUTH_SALT='$(cat /dev/urandom | LC_ALL=C tr -dc 'A-Za-z0-9' | head -c 53) >> _env
-        echo 'WORDPRESS_LOGGED_IN_SALT='$(cat /dev/urandom | LC_ALL=C tr -dc 'A-Za-z0-9' | head -c 53) >> _env
-        echo 'WORDPRESS_NONCE_SALT='$(cat /dev/urandom | LC_ALL=C tr -dc 'A-Za-z0-9' | head -c 53) >> _env
+        echo 'GATEWAY_URL=http://'${GATEWAY_PATH}.svc.${TRITON_ACCOUNT}.${TRITON_DC}.triton.zone >> _env
         echo >> _env
 
         echo '# Environment variables for MySQL service' >> _env
-        echo '# WordPress database/WPDB information' >> _env
-        echo 'MYSQL_USER=wpdbuser' >> _env
+        echo 'MYSQL_USER='${CLUSTER_NAME}_USER >> _env
         echo 'MYSQL_PASSWORD='$(cat /dev/urandom | LC_ALL=C tr -dc 'A-Za-z0-9' | head -c 7) >> _env
-        echo 'MYSQL_DATABASE=wp' >> _env
+        echo 'MYSQL_DATABASE='${CLUSTER_NAME} >> _env
         echo '# MySQL replication user, should be different from above' >> _env
         echo 'MYSQL_REPL_USER=repluser' >> _env
         echo 'MYSQL_REPL_PASSWORD='$(cat /dev/urandom | LC_ALL=C tr -dc 'A-Za-z0-9' | head -c 7) >> _env
@@ -150,10 +120,10 @@ envcheck() {
 
         echo '# Environment variables for backups to Manta' >> _env
         echo 'MANTA_URL=https://us-east.manta.joyent.com' >> _env
-        echo 'MANTA_BUCKET= # an existing Manta bucket' >> _env
-        echo 'MANTA_USER= # a user with access to that bucket' >> _env
-        echo 'MANTA_SUBUSER=' >> _env
-        echo 'MANTA_ROLE=' >> _env
+        echo 'MANTA_BUCKET='${MANTA_BUCKET}' # an existing Manta bucket' >> _env
+        echo 'MANTA_USER='${MANTA_USER}' # a user with access to that bucket' >> _env
+        echo 'MANTA_SUBUSER='${MANTA_SUBUSER} >> _env
+        echo 'MANTA_ROLE='${MANTA_ROLE} >> _env
 
         # MANTA_KEY_ID must be the md5 formatted key fingerprint. A SHA256 will result in errors.
         set +o pipefail
@@ -173,7 +143,10 @@ envcheck() {
         echo >> _env
 
         echo '# Consul discovery via Triton CNS' >> _env
-        echo CONSUL=consul.svc.${TRITON_ACCOUNT}.${TRITON_DC}.cns.joyent.com >> _env
+        echo 'SERVICE_DISCOVERY_HOST='${CLUSTER_NAME}-consul.svc.${TRITON_ACCOUNT}.${TRITON_DC}.cns.joyent.com >> _env
+        echo 'SERVICE_DISCOVERY_PORT=8500' >> _env
+        echo 'SERVICE_DISCOVERY_POLL=5' >> _env
+        echo 'SERVICE_DISCOVERY_TTL=10' >> _env
         echo >> _env
 
         echo 'Edit the _env file to confirm and set your desired configuration details'
@@ -183,31 +156,5 @@ envcheck() {
     fi
 }
 
-# ---------------------------------------------------
-# parse arguments
-
-# Get function list
-funcs=($(declare -F -p | cut -d " " -f 3))
-
-until
-    if [ ! -z "$1" ]; then
-        # check if the first arg is a function in this file, or use a default
-        if [[ " ${funcs[@]} " =~ " $1 " ]]; then
-            cmd=$1
-            shift 1
-        else
-            cmd="envcheck"
-        fi
-
-        $cmd "$@"
-        if [ $? == 127 ]; then
-            help
-        fi
-
-        exit
-    else
-        help
-    fi
-do
-    echo
-done
+# Run the setup
+envcheck
