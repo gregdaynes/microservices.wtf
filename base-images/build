@@ -1,9 +1,0 @@
-#!/bin/bash
-IMAGE=$1
-VERSION=$2
-
-
-docker build -t mswtf/$IMAGE:latest ./$IMAGE
-docker push mswtf/$IMAGE:latest
-docker tag mswtf/$IMAGE:latest mswtf/$IMAGE:$VERSION
-docker push mswtf/$IMAGE:$VERSION
