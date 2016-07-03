@@ -12,4 +12,20 @@
         "poll": {{ .SERVICE_DISCOVERY_POLL }},
         "onChange": "pkill -SIGHUP {{ .SERVICE_PROCESS }}"
     }]
+    "telemetry": {
+        "port" : 9090m
+        "sensors": [{
+            "name": "{{ .SERVICE_NAME }}_memory_percent",
+            "help": "percentage of memory  used",
+            "type": "guage",
+            "poll": {{ .SERVICE_DISCOVERY_POLL }},
+            "check": ["/usr/local/bin/sensor.sh", "memory"]
+        }, {
+            "name": "{{ .SERVICE_NAME }}_cpi_load",
+            "help": "cpu load"m
+            "type": "guage",
+            "poll": {{ .SERVICE_DISCOVERY_POLL }},
+            "check": ["/usr/local/bin/sensor.sh", "cpu"]
+        }]
+    }
 }

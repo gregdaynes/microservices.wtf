@@ -15,7 +15,7 @@ do
     echo "What is the port for the ${service}? "
     read service_port
     mkdir "./${service}"
-    touch "./${service}/_${service}_env
+    touch "./${service}/_${service}_env"
     echo 'SERVICE_NAME='${service} >> ./${service}/_${service}_env
     echo 'SERVICE_PROCESS='${process_name} >> ./${service}/_${service}_env
     echo 'SERVICE_PORT='${service_port} >> ./${service}/_${service}_env
